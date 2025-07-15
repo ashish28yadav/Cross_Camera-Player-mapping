@@ -1,9 +1,8 @@
 # ⚽ Cross-Camera Player Detection
 
 Detect and map players, goalkeepers, and the ball in football match videos using a fine-tuned [YOLOv8](https://github.com/ultralytics/ultralytics) model. This project applies **real-time detection**, **aesthetic bounding boxes**, and **animated tracking trails**, making it ideal for sports analytics, highlight generation, or tactical breakdowns.
+![Detection Demo](https://github.com/user-attachments/assets/b125d4d1-6dfc-4dc8-adad-41c45f5c25b7)
 
-![Detection Demo](<img width="1918" height="877" alt="image" src="https://github.com/user-attachments/assets/b125d4d1-6dfc-4dc8-adad-41c45f5c25b7" />
-) <!-- Replace with actual GIF or screenshot -->
 
 ---
 
@@ -29,6 +28,7 @@ Detect and map players, goalkeepers, and the ball in football match videos using
 ├── broadcast.mp4                # Primary input video
 ├── tacticam.mp4                 # (Optional) Alternative angle
 ├── detect_and_track.py          # Main Python script
+├── output_detected.mp4          #primary output video
 ├── output_with_black_frame.mp4  # Output video with styled detections
 ├── README.md                    # Project documentation
 
@@ -113,9 +113,7 @@ Ball	Red	Light Grey	Ball
 📽️ Model Training
 This project assumes you already trained a YOLOv8 model using Ultralytics with custom classes:
 
-txt
-Copy
-Edit
+
 ['player', 'goalkeeper', 'ball']
 If you haven’t trained your own model yet, refer to:
 👉 Ultralytics YOLO Docs
