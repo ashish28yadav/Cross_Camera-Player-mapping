@@ -2,6 +2,9 @@
 
 Detect and map players, goalkeepers, and the ball in football match videos using a fine-tuned [YOLOv8](https://github.com/ultralytics/ultralytics) model. This project applies **real-time detection**, **aesthetic bounding boxes**, and **animated tracking trails**, making it ideal for sports analytics, highlight generation, or tactical breakdowns.
 ![Detection Demo](https://github.com/user-attachments/assets/b125d4d1-6dfc-4dc8-adad-41c45f5c25b7)
+![Detection Demo](<img width="1900" height="883" alt="image" src="https://github.com/user-attachments/assets/f213ece2-bd23-4a10-9130-b0d50995ba21"/>)
+
+
 
 
 ---
