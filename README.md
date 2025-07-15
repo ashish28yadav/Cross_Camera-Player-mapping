@@ -1,105 +1,123 @@
-# Cross_Camera-Player-mapping
-🏃‍♂️ Cross-Camera Player and Ball Detection using YOLOv8
-A powerful sports video analysis tool that detects players, goalkeepers, and the ball, assigns unique IDs to players, and renders aesthetically styled bounding boxes with animated trails. The system uses a fine-tuned YOLOv8 model from Ultralytics and supports player tracking using centroid-based logic.
+# ⚽ Cross-Camera Player Detection
 
+Detect and map players, goalkeepers, and the ball in football match videos using a fine-tuned [YOLOv8](https://github.com/ultralytics/ultralytics) model. This project applies **real-time detection**, **aesthetic bounding boxes**, and **animated tracking trails**, making it ideal for sports analytics, highlight generation, or tactical breakdowns.
 
-📁 Project Structure
-bash
-Copy
-Edit
-📦 DDA Python
-├── best (1).pt                # Fine-tuned YOLOv8 model
-├── broadcast.mp4              # Main video input (match footage)
-├── tacticam.mp4               # Optional secondary angle video
-├── detect_and_track.py        # Core Python script
-├── output_with_black_frame.mp4# Output video with styled detections
-├── README.md                  # Project documentation
-🧠 Features
-✅ Detects players, goalkeepers, and the ball
+![Detection Demo](<img width="1918" height="877" alt="image" src="https://github.com/user-attachments/assets/b125d4d1-6dfc-4dc8-adad-41c45f5c25b7" />
+) <!-- Replace with actual GIF or screenshot -->
 
-✅ Assigns persistent Player IDs
+---
 
-✅ Adds animated motion trails
+## 🧠 Features
 
-✅ Renders styled bounding boxes:
+- 🎯 **YOLO-Based Object Detection**
+- 🧍 Identifies:
+  - Players (with unique IDs)
+  - Goalkeepers (green box)
+  - Ball (red box with light gray shadow)
+- 🪄 Aesthetic bounding boxes with shadows
+- 🌀 Animated motion trails
+- 🎥 Live preview with keyboard interrupt (`q`)
+- 💾 Final video output with all overlays
 
-Light black for players
+---
 
-Green for goalkeepers
+## 📁 Project Structure
 
-Red for ball (with grey label shadow)
+```bash
+📦 DDA Python/
+├── best (1).pt                  # Fine-tuned YOLOv8 model
+├── broadcast.mp4                # Primary input video
+├── tacticam.mp4                 # (Optional) Alternative angle
+├── detect_and_track.py          # Main Python script
+├── output_with_black_frame.mp4  # Output video with styled detections
+├── README.md                    # Project documentation
 
-✅ Clean GUI window (cv2.imshow) with real-time display
+🚀 Getting Started
+✅ Prerequisites
+Ensure Python 3.8+ is installed.
 
-✅ Lightweight tracking without external libraries
+Install required libraries:
 
-🚀 How the Code Works
-The core logic is in detect_and_track.py:
-
-Load YOLOv8 model (best (1).pt) trained to detect player, ball, goalkeeper classes.
-
-Read input video (broadcast.mp4) using OpenCV.
-
-For every frame:
-
-Run detection using YOLOv8.
-
-For each object:
-
-If ball: draw red box with grey shadow.
-
-If goalkeeper: green box with label.
-
-If player: assign ID using centroid matching, draw light black box.
-
-Add animation trail for each object’s movement.
-
-Save output to output_with_black_frame.mp4.
-
-🛠️ How to Run on Another PC
-1. ✅ Prerequisites
-Make sure you have:
-
-Python 3.8+
-
-pip (Python package manager)
-
-A CUDA-compatible GPU (recommended for speed, but CPU also works)
-
-2. 📦 Install Dependencies
 bash
 Copy
 Edit
 pip install ultralytics opencv-python numpy
-3. 📁 File Setup
-Ensure the following files are in the same folder:
+💡 Tip: If using GPU, make sure PyTorch with CUDA is properly installed.
+
+⚙️ How It Works
+The detect_and_track.py script performs the following steps:
+
+Load YOLOv8 model from best (1).pt (fine-tuned to detect "player", "goalkeeper", and "ball").
+
+Open the input video (broadcast.mp4) using OpenCV.
+
+For each frame:
+
+Perform detection using YOLOv8.
+
+Assign unique IDs to players using centroid tracking.
+
+Style bounding boxes:
+
+🟩 Goalkeepers → Green box
+
+⚫ Players → Light black box with white label
+
+🔴 Ball → Red box with light gray label shadow
+
+Draw motion trails for smooth tracking effect.
+
+Save the output as output_with_black_frame.mp4.
+
+▶️ How to Run
+Clone this repo or download the project folder.
+
+Ensure these files exist in the same directory:
 
 detect_and_track.py
 
 best (1).pt (your trained YOLOv8 model)
 
-broadcast.mp4 (your input video)
+broadcast.mp4 (input match video)
 
-4. ▶️ Run the Script
+Then run:
+
 bash
 Copy
 Edit
 python detect_and_track.py
-Press Q to stop the preview early.
+Press q at any time to exit the preview window.
 
-Final video will be saved as output_with_black_frame.mp4.
+The final annotated video will be saved as:
+output_with_black_frame.mp4
 
-🧪 Example Output
-“Player 1” and “Goalkeeper 3” bounding boxes move with animated trails, while the ball is tracked with a red box — all labels styled for visual clarity.
+<details> <summary>
+🔧 Customization Tips</summary>
+Change video source:
+Modify the path in video_path = "..." inside detect_and_track.py.
 
-🧩 Model Note
-The project assumes the YOLOv8 model (best (1).pt) is trained with the following custom classes:
+Update class labels:
+If your model uses different class names (e.g., "person" or "gk"), update the string conditions like:
 
-"player"
+if 'goalkeeper' in class_name.lower()
+Export tracking data:
+You can log each player's bounding box and ID to a CSV file for post-game analysis.
 
-"goalkeeper"
+</details>
+🧪 Sample Output
+Object	Bounding Box	Shadow Color	Label Example
+Player	Light Black	Black	Player 4
+Goalkeeper	Green	Black	Goalkeeper 1
+Ball	Red	Light Grey	Ball
 
-"ball"
+📽️ Model Training
+This project assumes you already trained a YOLOv8 model using Ultralytics with custom classes:
 
-If your model uses different labels, update the class name checks in the script.
+txt
+Copy
+Edit
+['player', 'goalkeeper', 'ball']
+If you haven’t trained your own model yet, refer to:
+👉 Ultralytics YOLO Docs
+
 
