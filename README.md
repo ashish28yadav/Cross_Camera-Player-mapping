@@ -1,5 +1,5 @@
 # ⚽ Player Re-Identification In Sports Footage
-    Google Drive link: https://drive.google.com/drive/folders/1VueEDahQNGaRK78HhoW4SW2iOsFm7979?usp=sharing
+Google Drive link: https://drive.google.com/drive/folders/1VueEDahQNGaRK78HhoW4SW2iOsFm7979?usp=sharing
 
 Detect and map players, goalkeepers, and the ball in football match videos using a fine-tuned [YOLOv8](https://github.com/ultralytics/ultralytics) model. This project applies **real-time detection**, **aesthetic bounding boxes**, and **animated tracking trails**, making it ideal for sports analytics, highlight generation, or tactical breakdowns.
 ![Detection Demo 1](https://github.com/user-attachments/assets/b125d4d1-6dfc-4dc8-adad-41c45f5c25b7)
