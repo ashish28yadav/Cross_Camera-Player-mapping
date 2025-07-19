@@ -1,4 +1,4 @@
-# ⚽ Cross-Camera Player Detection
+# ⚽ Player Re-Identification In Sports Footage
 
 Detect and map players, goalkeepers, and the ball in football match videos using a fine-tuned [YOLOv8](https://github.com/ultralytics/ultralytics) model. This project applies **real-time detection**, **aesthetic bounding boxes**, and **animated tracking trails**, making it ideal for sports analytics, highlight generation, or tactical breakdowns.
 ![Detection Demo 1](https://github.com/user-attachments/assets/b125d4d1-6dfc-4dc8-adad-41c45f5c25b7)
@@ -30,98 +30,69 @@ Detect and map players, goalkeepers, and the ball in football match videos using
 
 ```bash
 📦 DDA Python/
-├── best (1).pt                  # Fine-tuned YOLOv8 model
-├── broadcast.mp4                # Primary input video
-├── tacticam.mp4                 # (Optional) Alternative angle
-├── detect_and_track.py          # Main Python script
-├── output_detected.mp4          #primary output video
-├── output_with_black_frame.mp4  # Output video with styled detections
-├── README.md                    # Project documentation
+├── broadcast.mp4 # Broadcast view input video
+├── tacticam.mp4 # Tacticam view input video
+├── best (1).pt # YOLOv8 custom trained model
+├── broadcast_output.mp4 # Final annotated broadcast video
+├── tacticam_output.mp4 # Final annotated tacticam video
+├── main.py # Main pipeline (run this!)
+├── detect_players.py # Detection and crop logic
+├── extract_features.py # ResNet50-based embedding generator
+├── match_players.py # Feature-based matching across views
+├── annotate_video.py # Drawing IDs and saving output video
 
-🚀 Getting Started
-✅ Prerequisites
-Ensure Python 3.8+ is installed.
 
-Install required libraries:
+---
 
-bash
-Copy
-Edit
-pip install ultralytics opencv-python numpy
-💡 Tip: If using GPU, make sure PyTorch with CUDA is properly installed.
+## 🚀 How It Works
 
-⚙️ How It Works
-The detect_and_track.py script performs the following steps:
+### 🔄 Pipeline Overview
 
-Load YOLOv8 model from best (1).pt (fine-tuned to detect "player", "goalkeeper", and "ball").
+1. **Detect players** in each frame using YOLOv8
+2. **Crop bounding boxes** for all detected players
+3. **Extract ResNet50 embeddings** from each crop
+4. **Match players** from tacticam to broadcast view using cosine similarity
+5. **Assign a consistent `player_id`** to each player across both views
+6. **Overlay bounding boxes and IDs**, and save annotated output videos
 
-Open the input video (broadcast.mp4) using OpenCV.
+---
 
-For each frame:
+## ⚙️ Setup Instructions
 
-Perform detection using YOLOv8.
+### ✅ Requirements
 
-Assign unique IDs to players using centroid tracking.
+Install all dependencies:
 
-Style bounding boxes:
-
-🟩 Goalkeepers → Green box
-
-⚫ Players → Light black box with white label
-
-🔴 Ball → Red box with light gray label shadow
-
-Draw motion trails for smooth tracking effect.
-
-Save the output as output_with_black_frame.mp4.
+```bash
+pip install ultralytics opencv-python numpy torch torchvision scikit-learn
+⚠️ Python 3.8+ recommended
+💡 GPU-accelerated PyTorch will significantly improve performance
 
 ▶️ How to Run
-Clone this repo or download the project folder.
+Make sure the following files are present:
 
-Ensure these files exist in the same directory:
+broadcast.mp4, tacticam.mp4 (your videos)
 
-detect_and_track.py
+best (1).pt (YOLOv8 model trained to detect player, ball, goalkeeper)
 
-best (1).pt (your trained YOLOv8 model)
+All .py scripts from this repo
+python main.py
+✅ That’s it! The pipeline will:
 
-broadcast.mp4 (input match video)
+Run detection
 
-Then run:
+Match identities across videos
 
-bash
-Copy
-Edit
-python detect_and_track.py
-Press q at any time to exit the preview window.
+Output two new annotated videos:
 
-The final annotated video will be saved as:
-output_with_black_frame.mp4
+broadcast_output.mp4
 
-<details> <summary>
-🔧 Customization Tips</summary>
-Change video source:
-Modify the path in video_path = "..." inside detect_and_track.py.
+tacticam_output.mp4
 
-Update class labels:
-If your model uses different class names (e.g., "person" or "gk"), update the string conditions like:
+Press q in the preview window (optional) to stop early.
 
-if 'goalkeeper' in class_name.lower()
-Export tracking data:
-You can log each player's bounding box and ID to a CSV file for post-game analysis.
-
-</details>
-🧪 Sample Output
-Object	Bounding Box	Shadow Color	Label Example
-Player	Light Black	Black	Player 4
-Goalkeeper	Green	Black	Goalkeeper 1
-Ball	Red	Light Grey	Ball
-
-📽️ Model Training
-This project assumes you already trained a YOLOv8 model using Ultralytics with custom classes:
-
-
-['player', 'goalkeeper', 'ball']
-If you haven’t trained your own model yet, refer to:
-👉 Ultralytics YOLO Docs
-
-
+🧪 Example Output Format
+Object	View	Bounding Box Color	Label
+Player	Both	Light Black	Player 4
+Goalkeeper	Both (future)	Green	Goalkeeper 1
+Ball	Both (future)	Red + Grey Shadow	Ball
